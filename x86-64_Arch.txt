@@ -1,0 +1,54 @@
+# Architecture
+  ## CISC vs RISC
+    ### CISC ( Complex Instruction Set Computer )
+      - Intel uses CISC 
+      - Has lots of very specific instructions that do not have a general use case and are unlikely to be seen often.
+      - Important to learn the manual and to lookup instructions that aren't common when you encounter them.
+      - Variable length instructions, between 1-15 bytes long.
+    ### RISC ( Reduced Instruction Set Computer )
+      - Typically has more registers and has fixed sized instructions.
+      - PowerPC, ARM, SPARC, MIPS all use this architecture 
+  ## Endianess ( How the Sequence of Bytes are Stored )
+    ### Big Endian
+      - Many of the RISC systems started as big endian ( PowerPC, SPARC, MIPS ) but can now be used as bi-endian ( Which means they can be stored as either big endian or little endian ). 
+      - ARM is bi-endian
+      - Example ( 0x12345678 is stored as the same as it is )
+    ### Little Endian
+      - Stored in RAM little end first aka the least significat byte of a word or larger is stored in the lowest address
+      - Intel is little endian
+      - Example ( 0x12345678 in little endian is stored 0x78563412 )
+  ## Registers
+    ### General About Registers 
+      - Small memory storage areas built into the processor ( still volatile memory)
+      - Their are 16 'general purpose' registers plus the instruction pointer register which points to the next instruction to be executed.
+      - On x86-32 : registers are 32 bits long
+      - On x86-64 : registers are 64 bits long
+   ### Register Conventions
+      - RAX : Stores functions return values
+      - RBX : Base Pointer for the data section
+      - RCX : Counter for string and loop operations
+      - RDX : I/O pointer
+      - RSI : Source Pointer for string operations
+      - RDI : Destination pointer for string operations
+      - RSP : Stack top pointer
+      - RBP : Stack frame base pointer
+      - RIP : Pointer to next instructions to execute
+
+  ### 16 bit naming conventions
+        - Register| AX    | CX    | DX    | BX    | SP    | BP    | SI    | DI    |           
+        - 64 bit  | RAX   | RCX   | RDX   | RBX   | RSP   | RBP   | RSI   | RDI   |
+        - 32 bit  | EAX   | ECX   | EDX   | EBX   | ESP   | EBP   | ESI   | EDI   |  
+        - 16 bit  | AX    | CX    | DX    | BX    | SP    | BP    | SI    | DI    |
+        - 8 bit   | AH,AL | CH,CL | DH,DL | BH,BL | ,SPL  | ,BPL  | ,SIL  | ,DIL  |
+    
+      - Accumulator register : (AX) : Used in arithmetic operations
+      - Counter register : (CX) : Used in shift/rotate instructions and loops.
+      - Data register : (DX) : Used in arithmetic operations and I/O operations.
+      - Base register : (BX) : Used as a pointer to data (located in segment register DS, when in segmented mode).
+      - Stack Pointer register : (SP) : Pointer to the top of the stack.
+      - Stack Base Pointer register : (BP) :Used to point to the base of the stack.
+      - Source Index register : (SI) : Used as a pointer to a source in stream operations.
+      - Destination Index register : (DI) : Used as a pointer to a destination in stream operations.
+
+  ### Caller Saved Registers ( Volatile Registers )
+      
