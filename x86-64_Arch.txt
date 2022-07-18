@@ -1,54 +1,90 @@
 # Architecture
   ## CISC vs RISC
     ### CISC ( Complex Instruction Set Computer )
-      - Intel uses CISC 
-      - Has lots of very specific instructions that do not have a general use case and are unlikely to be seen often.
-      - Important to learn the manual and to lookup instructions that aren't common when you encounter them.
-      - Variable length instructions, between 1-15 bytes long.
+       - Intel uses CISC 
+       - Has lots of very specific instructions that do not have a general use case and are unlikely to be seen often.
+       - Important to learn the manual and to lookup instructions that aren't common when you encounter them.
+       - Variable length instructions, between 1-15 bytes long.
     ### RISC ( Reduced Instruction Set Computer )
-      - Typically has more registers and has fixed sized instructions.
-      - PowerPC, ARM, SPARC, MIPS all use this architecture 
+       - Typically has more registers and has fixed sized instructions.
+       - PowerPC, ARM, SPARC, MIPS all use this architecture.
+      
   ## Endianess ( How the Sequence of Bytes are Stored )
     ### Big Endian
-      - Many of the RISC systems started as big endian ( PowerPC, SPARC, MIPS ) but can now be used as bi-endian ( Which means they can be stored as either big endian or little endian ). 
-      - ARM is bi-endian
-      - Example ( 0x12345678 is stored as the same as it is )
+       - Many of the RISC systems started as big endian ( PowerPC, SPARC, MIPS ) but can now be used as bi-endian ( Which means they can be stored as either big endian or little endian ). 
+       - ARM is bi-endian
+       - Example ( 0x12345678 is stored as the same as it is )
     ### Little Endian
-      - Stored in RAM little end first aka the least significat byte of a word or larger is stored in the lowest address
-      - Intel is little endian
-      - Example ( 0x12345678 in little endian is stored 0x78563412 )
+       - Stored in RAM little end first aka the least significat byte of a word or larger is stored in the lowest address
+       - Intel is little endian
+       - Example ( 0x12345678 in little endian is stored 0x78563412 )
+  
   ## Registers
     ### General About Registers 
-      - Small memory storage areas built into the processor ( still volatile memory)
-      - Their are 16 'general purpose' registers plus the instruction pointer register which points to the next instruction to be executed.
-      - On x86-32 : registers are 32 bits long
-      - On x86-64 : registers are 64 bits long
-   ### Register Conventions
-      - RAX : Stores functions return values
-      - RBX : Base Pointer for the data section
-      - RCX : Counter for string and loop operations
-      - RDX : I/O pointer
-      - RSI : Source Pointer for string operations
-      - RDI : Destination pointer for string operations
-      - RSP : Stack top pointer
-      - RBP : Stack frame base pointer
-      - RIP : Pointer to next instructions to execute
-
-  ### 16 bit naming conventions
+       - Small memory storage areas built into the processor ( still volatile memory)
+       - Their are 16 'general purpose' registers plus the instruction pointer register which points to the next instruction to be executed.
+       - On x86-32 : registers are 32 bits long
+       - On x86-64 : registers are 64 bits long 
+    ### Register Conventions
+       - RAX : Stores functions return values
+       - RBX : Base Pointer for the data section
+       - RCX : Counter for string and loop operations
+       - RDX : I/O pointer
+       - RSI : Source Pointer for string operations
+       - RDI : Destination pointer for string operations
+       - RSP : Stack top pointer
+       - RBP : Stack frame base pointer
+       - RIP : Pointer to next instructions to execute
+    ### 16 bit naming conventions
         - Register| AX    | CX    | DX    | BX    | SP    | BP    | SI    | DI    |           
         - 64 bit  | RAX   | RCX   | RDX   | RBX   | RSP   | RBP   | RSI   | RDI   |
         - 32 bit  | EAX   | ECX   | EDX   | EBX   | ESP   | EBP   | ESI   | EDI   |  
         - 16 bit  | AX    | CX    | DX    | BX    | SP    | BP    | SI    | DI    |
         - 8 bit   | AH,AL | CH,CL | DH,DL | BH,BL | ,SPL  | ,BPL  | ,SIL  | ,DIL  |
-    
-      - Accumulator register : (AX) : Used in arithmetic operations
-      - Counter register : (CX) : Used in shift/rotate instructions and loops.
-      - Data register : (DX) : Used in arithmetic operations and I/O operations.
-      - Base register : (BX) : Used as a pointer to data (located in segment register DS, when in segmented mode).
-      - Stack Pointer register : (SP) : Pointer to the top of the stack.
-      - Stack Base Pointer register : (BP) :Used to point to the base of the stack.
-      - Source Index register : (SI) : Used as a pointer to a source in stream operations.
-      - Destination Index register : (DI) : Used as a pointer to a destination in stream operations.
-
-  ### Caller Saved Registers ( Volatile Registers )
-      
+       - Accumulator register : (AX) : Used in arithmetic operations
+       - Counter register : (CX) : Used in shift/rotate instructions and loops.
+       - Data register : (DX) : Used in arithmetic operations and I/O operations.
+       - Base register : (BX) : Used as a pointer to data (located in segment register DS, when in segmented mode).
+       - Stack Pointer register : (SP) : Pointer to the top of the stack.
+       - Stack Base Pointer register : (BP) :Used to point to the base of the stack.
+       - Source Index register : (SI) : Used as a pointer to a source in stream operations.
+       - Destination Index register : (DI) : Used as a pointer to a destination in stream operations.
+    ### Caller Saved Registers ( Volatile Registers )
+       - The caller is in charge of saving the value of the subroutine, and then restoring the value after the call returns
+       - The Callee can modify values in caller-save registers
+       - Visual Studios : RAX, RCX, RDX, R8-R11
+       - GCC : RAX, RCX, RDX, RSI, RDI, R8-R11
+    ### Callee-Save Registers ( Non-Volatile Registers )
+       - Callee must not modify registers which the caller didnt save, unless callee will restore existing values.
+       - VisualStudio : RBX, RBP, RDI, RSI, R12-R15
+       - GCC : RBX, RBP, R12-R15
+  ## Flags
+    - The FLAGS register is a status register which contains the state of a CPU. 
+    - 32 bit version is called EFLAGS
+    - 64 bit version is called RFLAGS
+    ### FLAGS Register ( Intel x86 ) ( RES=reserved not a actual abbreviaition )
+       - | Bit # | ABBRE | Name          | Category | = 1 | = 0 |
+       - | 1     | CF    | Carry Flags   | Status   | CY  | NC  |
+       - | 2     | RES   | Reserved      |          |     |     |
+       - | 3     | PF    | Parity Flags  | Status   | PE  | PO  |
+       - | 4     | RES   | Reserved      |          |     |     |
+       - | 5     | AF    | Adjust Flag   | Status   | AC  | NA  |
+       - | 6     | RES   | Reserved      |          |     |     |
+       - | 7     | ZF    | Zero Flag     | Status   | ZR  | NZ  |
+       - | 8     | SF    | Sign Flag     | Status   | NG  | PL  |
+       - | 9     | TF    | Trap Flag     | Control  |     |     |
+       - | 10    | IF    | Interrupt Flag| Control  | EI  | DI  |
+       - | 11    | DF    | Direction Flag| Control  | DN  | UP  |
+       - | 12    | OF    | Overflow Flag | Status   | OV  | NV  |
+       - | 13    | IOPL  | I/O priv level| System   |     |     |
+       - | 14    | NT    | Nested Task   | System   |     |     |
+       - | 15    | RES   | Reserved      |          |     |     |
+       - | 16    | RF    | Resume Flag   | System   |     |     |
+       - | 17    | VM    | Virtual 8086  | System   |     |     |
+       - | 18    | AC    | AlignmentCheck| System   |     |     |
+       - | 19    | VIF   | Vir Inter Flag| System   |     |     |
+       - | 20    | VIP   | Vir Inter Pend| System   |     |     |
+       - | 21    | ID    | CPUID         | System   |     |     |
+       - | 22-31 | RES   | Reserved      | System   |     |     |
+       - | 32-64 | RES   | Reserved      | System   |     |     |
+       
