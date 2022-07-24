@@ -87,4 +87,7 @@
        - | 21    | ID    | CPUID         | System   |     |     |
        - | 22-31 | RES   | Reserved      | System   |     |     |
        - | 32-64 | RES   | Reserved      | System   |     |     |
-       
+    - Carry Flag (CF) : Is set if an arithmetic operation generates a carry or a borrow out of the most significant bit of the result
+    - Overflow Flag (OF) : Is set if the integeger result is to large of a positive number or to small of a negative number to fit in the destination. 
+    - Parity Flag (PF) : Is set if the least significant byte of the result contains an even number of 1's (aka it does a parity check)
+    -Auxiliary Flag (AF) : Set if an arithmetic operation generats a carry or a borrow out of bit 3 of the result. Used in binary coded decimal (BCD) arithmetic.
